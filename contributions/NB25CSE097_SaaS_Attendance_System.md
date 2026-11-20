@@ -64,6 +64,7 @@ The SaaS attendance platform is architected around the following core features:
 
 The system follows a three-tier cloud SaaS architecture comprising a Client Layer, a Cloud Application & Services Layer, and a Managed Storage/Data Layer.
 
+#### A. Interactive Mermaid Diagram
 ```mermaid
 flowchart TD
     subgraph Clients["1. Client Layer (Any Device / Anywhere)"]
@@ -106,9 +107,43 @@ flowchart TD
     ReportingService --> CloudStorage
 ```
 
+#### B. Text / ASCII Architectural Representation
+```text
++-------------------------------------------------------------------------------+
+|                             1. CLIENT LAYER                                   |
+|   [Faculty Device]             [Student Portal]          [Admin Dashboard]    |
+| (Mark Attendance/Reports)     (View Attendance)        (Config/User Mgmt)     |
++-------------------------------------------------------------------------------+
+                                      |
+                           HTTPS / TLS 1.3 Encryption
+                                      v
++-------------------------------------------------------------------------------+
+|                    2. CLOUD-HOSTED SaaS APPLICATION TIER                      |
+|                  +-----------------------------------------+                  |
+|                  |   Cloud Load Balancer & API Gateway     |                  |
+|                  +-----------------------------------------+                  |
+|                         |                     |                               |
+|        +----------------+---+       +---------+----------+                    |
+|        | Auth & RBAC Service|       | Attendance API Pod |                    |
+|        | (JWT / OAuth2 SSO) |       | (Core Logic Engine)|                    |
+|        +--------------------+       +--------------------+                    |
+|                                               |                               |
+|                     +-------------------------+-------------+                 |
+|                     | Notification Engine  | Report Engine  |                 |
+|                     | (SMS / Email Alerts) | (PDF / CSV)    |                 |
+|                     +----------------------+----------------+                 |
++-------------------------------------------------------------------------------+
+                                      |
+                                      v
++-------------------------------------------------------------------------------+
+|                      3. MANAGED CLOUD DATA & STORAGE TIER                     |
+|  [(Central Database - PostgreSQL)]   [(Audit Logs)]   [(Cloud Storage)]       |
++-------------------------------------------------------------------------------+
+```
+
 #### Architecture Walkthrough:
-1. **Client Layer:** Users interact with responsive web and progressive mobile interfaces over secure HTTPS.
-2. **Cloud SaaS Layer:** A managed Load Balancer distributes requests across stateless containerized API pods. Authentication is verified via JWT tokens. The Attendance API coordinates business rules, session validations, and triggers notifications through message queues.
+1. **Client Layer:** Users interact with responsive web and progressive mobile interfaces over secure HTTPS from any device.
+2. **Cloud SaaS Layer:** A managed Load Balancer distributes incoming requests across containerized microservices. Authentication is verified via JWT tokens. The Attendance API validates inputs, executes business rules, and triggers background notification queues for attendance alerts.
 3. **Managed Data Tier:** Relational data is consolidated in a managed high-availability database cluster with automated replication, point-in-time recovery, and separated audit logging for security compliance.
 
 ---
@@ -117,26 +152,27 @@ flowchart TD
 
 ### 5.1 Benefits of Cloud-Based Applications
 
-1. **Ubiquitous Accessibility:**
-   Faculty can log attendance or review records from anywhere—whether in the classroom, departmental cabin, or working remotely. Students can independently view up-to-the-minute attendance percentages from their smartphones without queuing at administrative noticeboards.
+#### 1. Ubiquitous Accessibility for Faculty and Students
+- **For Faculty:** Instructors can mark attendance or review student records anywhere—inside lecture halls, labs, faculty cabins, or off-campus—without needing access to a specific desktop or paper log.
+- **For Students:** Students gain 24/7 transparent access to their up-to-date attendance percentages directly from their personal mobile devices, eliminating confusion, misinformation, and the need to queue outside administrative offices.
 
-2. **Centralized Data Consistency and Integrity:**
-   By migrating from distributed, offline Excel files to a single centralized cloud database, data conflicts and synchronization mismatches are completely eliminated. Any update made by an instructor is immediately reflected across institutional systems in real time.
+#### 2. Centralized Single Source of Truth & Data Integrity
+By transitioning from fragmented Excel files on individual computers to a unified cloud database, synchronization mismatches, data loss, and accidental overrides are eliminated. Any update made by a faculty member is instantly reflected across departmental dashboards, parent notification systems, and university examination records.
 
-3. **Reduced IT Maintenance Overhead & Elastic Scalability:**
-   The institution does not need to invest in local servers, uninterrupted on-premise power backups, or manual software installations across campus computers. The SaaS provider automatically handles capacity scaling during peak registration or exam submission hours, security patches, and routine disaster recovery backups.
+#### 3. Elastic Scalability and Zero On-Premise IT Maintenance
+The institution does not need to invest capital in dedicated on-premise servers, power backups, or manual software installations across campus computers. The SaaS provider automatically handles capacity scaling during peak registration and semester-end periods, applies security patches, and maintains automated disaster recovery backups.
 
 ---
 
 ### 5.2 Possible Challenges and Mitigation Strategies
 
-1. **Dependence on Continuous Internet Connectivity:**
-   - *Challenge:* If campus Wi-Fi or cellular networks experience downtime, instructors may be temporarily unable to connect to the cloud endpoint to take attendance.
-   - *Mitigation:* Implement an offline-first Progressive Web Application (PWA) client with local storage (IndexedDB). Faculty can take attendance offline; the client queues the encrypted records locally and automatically synchronizes with the cloud server as soon as network connectivity is restored.
+#### 1. Dependence on Continuous Internet Connectivity
+- **Challenge:** If campus Wi-Fi or cellular networks experience sudden downtime, instructors may be temporarily unable to connect to the cloud endpoint to take attendance during class.
+- **Mitigation Strategy:** Implement an **offline-first Progressive Web Application (PWA)** client with local browser storage (IndexedDB). Faculty can take attendance offline; the client queues the encrypted records locally and automatically synchronizes with the cloud server as soon as network connectivity is restored.
 
-2. **Data Security, Privacy, and Multi-Tenant Isolation:**
-   - *Challenge:* Storing institutional student records and faculty information on shared public cloud infrastructure exposes risks of unauthorized access, data leaks, or insider tampering if security policies are misconfigured.
-   - *Mitigation:* Enforce end-to-end encryption (TLS 1.3 for data in transit and AES-256 for data at rest), mandate Multi-Factor Authentication (MFA) for administrative and faculty roles, adhere to strict multi-tenant row-level database security (RLS), and maintain automated immutable audit logs for every record modification.
+#### 2. Data Security, Privacy, and Multi-Tenant Isolation
+- **Challenge:** Storing institutional student records and faculty information on shared public cloud infrastructure exposes risks of unauthorized access, data leaks, or insider tampering if security policies are misconfigured.
+- **Mitigation Strategy:** Enforce end-to-end encryption (**TLS 1.3** for data in transit and **AES-256** for data at rest), mandate **Multi-Factor Authentication (MFA)** for administrative and faculty roles, adhere to strict multi-tenant **Row-Level Security (RLS)** in the database, and maintain automated immutable audit logs for every record modification.
 
 ---
 
