@@ -1,0 +1,68 @@
+Line_Number,Markdown_Content
+1,# SaaS-Based College Attendance Management System
+2,
+3,## Software Engineering – Open Source Contribution
+4,
+5,### Student Details
+6,- **Name:** M Roshith
+7,- **USN:** NB25CSE209
+8,- **Selected Case Study:** Question 1 – SaaS and Cloud-Based Applications
+9,
+10,## Project Overview
+11,This project proposes a cloud-based attendance management system for a college. It replaces manual attendance registers and separate Excel sheets with a centralized system that faculty members can access through the internet.
+12,
+13,## Objectives
+14,- Allow faculty to mark attendance online.
+15,- Store attendance records in a centralized cloud database.
+16,- Calculate attendance percentages automatically.
+17,- Allow authorized students and faculty to view attendance information.
+18,- Generate attendance reports and notifications.
+19,
+20,## Main Features
+21,"1. Secure login with role-based access for administrators, faculty, and students."
+22,"2. Student, class, and subject management."
+23,3. Digital attendance marking.
+24,4. Automatic attendance percentage calculation.
+25,5. Attendance reports and low-attendance notifications.
+26,6. Centralized cloud storage.
+27,
+28,## Proposed Architecture
+29,
+30,```mermaid
+31,flowchart TD
+32,    A[Faculty / Admin / Student] -->|Browser or mobile app| B[Internet]
+33,    B --> C[Cloud-hosted SaaS application]
+34,    C --> D[Authentication and access control]
+35,    C --> E[Attendance management service]
+36,    E --> F[(Cloud database)]
+37,    C --> G[Reports and notifications]
+38,    F --> G
+39,```
+40,
+41,## Benefits
+42,- **Anywhere access:** Faculty can use the system from any location with an internet connection.
+43,- **Real-time updates:** Authorized users can view updated attendance records.
+44,"- **Reduced maintenance:** The SaaS provider manages hosting, updates, and much of the infrastructure."
+45,
+46,## Challenges
+47,- **Internet dependency:** Poor connectivity or an outage can interrupt access.
+48,"- **Data security and privacy:** Student records must be protected using secure authentication, access permissions, encryption, and backups."
+49,
+50,## Repository Structure
+51,
+52,```text
+53,.
+54,├── README.md
+55,└── contributions/
+56,    └── NB25CSE209_SaaS_Attendance_System.md
+57,```
+58,
+59,## Open-Source Contribution Workflow
+60,1. Fork the faculty repository.
+61,2. Add the individual answer file inside the `contributions/` folder.
+62,3. Commit the changes to the forked repository.
+63,4. Open a Pull Request to the faculty repository.
+64,5. Share the Pull Request URL as submission evidence.
+65,
+66,## Conclusion
+67,"A SaaS-based attendance management system can make attendance recording faster, more accessible, and easier to manage. Reliable internet access and strong data security controls are important for successful implementation."
