@@ -47,6 +47,8 @@ To replace slow, error-prone manual processes, the company should implement DevO
 * **Deployment:** After passing staging checks, the CD tool automatically promotes the identical build artifact to live production servers. Strategies like **blue-green deployment** (shifting traffic to an already-verified environment) or **rolling updates** (updating server instances gradually) keep the storefront online during releases and allow instant rollbacks if monitoring detects anomalies.
 
 ### 3.4 CI/CD Pipeline Diagram
+<img width="1344" height="756" alt="image" src="https://github.com/user-attachments/assets/cabe7e3a-a300-4cf3-8150-cbef2777cc60" />
+
 
 
 
